@@ -1,15 +1,15 @@
 precision mediump float;
 
-attribute vec3 vertPosition;
-attribute vec3 vertColor;
-uniform mat4 mWorld;
-uniform mat4 mView;
-uniform mat4 mProj;
+attribute vec3 a_Position;
+attribute vec3 a_Color;
+uniform mat4 u_World;
+uniform mat4 u_View;
+uniform mat4 u_Proj;
 
-varying vec3 fragColor;
+varying vec3 v_Color;
 void main()
 {
-  fragColor = vertColor;
-  gl_Position = mProj * mView * mWorld * vec4(vertPosition, 1.0);
+  v_Color = a_Color;
+  gl_Position = u_Proj * u_View * u_World * vec4(a_Position, 1.0);
 }
 

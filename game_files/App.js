@@ -1,6 +1,6 @@
 var puzzle;
 
-export var initApp = function () {
+export var initApp = function (dimensions) {
   var canvas = document.getElementById("gameSurface");
   
   var gl = canvas.getContext("webgl");
@@ -8,7 +8,7 @@ export var initApp = function () {
   if (!gl) {
     alert("your browser does not support webgl.");
   }
-  puzzle = new puzzleScene(gl);
+  puzzle = new Scene(gl, dimensions);
   puzzle.Load().then(() => puzzle.Begin());
 }
 
