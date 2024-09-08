@@ -1,5 +1,7 @@
 import {CreateModel} from './lib/utils/CreateModel.js';
-import {GetShaderText, CreateProgram} from './lib/utils/CreateProgram';
+import { GetShaderText , CreateShaderProgram } from './lib/utils/CreateProgram.js';
+import * as vec3 from '/node_modules/gl-matrix/gl-matrix.js';
+import * as mat4 from '/node_modules/gl-matrix/gl-matrix.js';
 
 export class Scene {
   constructor (gl, dimensions) {
@@ -9,32 +11,46 @@ export class Scene {
 
   async Load() {
     var self = this;
-    this.program;
-    this.buffer;
-    this.viewMatrix;
-    this.projMatrix;
-    this.look;
+    self.program;
+    self.buffer;
+    self.viewMatrix;
+    self.projMatrix;
+    self.look;
 
     const triangle = new Float32Array([1, 0, 0, 1, 0, 0, 
                                        0, 1, 0, 0, 1, 0, 
                                        0, 0, 1, 0, 0, 1]);
 
     const vertexShaderText = await GetShaderText('game_files/lib/shaders/VertexShader.glsl');
-    const fragmentShaderText = await GetShaderText('game_files/lib/shader/FragmentShader.glsl');
+    const fragmentShaderText = await GetShaderText('game_files/lib/shaders/FragmentShader.glsl');
 
-    const this.program = CreateProgram(this.gl, vertexShaderText, fragmentShaderText);
+    self.program = CreateShaderProgram(self.gl, vertexShaderText, fragmentShaderText);
 
-    const this.buffer = CreateModel(this.gl, triangle);
-    me.program.uniforms = {
-      u_Proj: me.gl.getUniformLocation(me.program, 'u_Proj'),
-      u_View: me.gl.getUniformLocation(me.program, 'u_View'),
-      u_World: me.gl.getUniformLocation(me.program, 'u_World'),
+    self.buffer = CreateModel(self.gl, triangle);
+    self.program.uniforms = {
+      u_Proj: self.gl.getUniformLocation(self.program, 'u_Proj'),
+      u_View: self.gl.getUniformLocation(self.program, 'u_View'),
+      u_World: self.gl.getUniformLocation(self.program, 'u_World'),
     };
 
-    me.program.attribs = {
-      a_Position: me.gl.getAttribLocation(me.Program, 'a_Position'),
-      a_Color: me.gl.getAttribLocation(me.Program, 'a_Color'),
+    self.program.attribs = {
+      a_Position: self.gl.getAttribLocation(self.program, 'a_Position'),
+      a_Color: self.gl.getAttribLocation(self.program, 'a_Color'),
     };
+
+    self.viewMatrix = glMatrix.mat4.create();
+    self.projMatrix = glMatrix.mat4.create();
+    self.worldMatrix = glMatrix.mat4.create();
+    self.look = glMatrix.vec3.fromValues(5, 5, 5);    //-5, -5, 3
+
+    glMatrix.mat4.lookAt(self.viewMatrix, self.look, [0, 0, 0], [0, 0, 1]);   
+    glMatrix.mat4.perspective(
+      self.projMatrix,
+      glMatrix.glMatrix.toRadian(45),
+      self.gl.canvas.clientWidth/self.gl.canvas.clientHeight,
+      2,
+      1000.0
+    );
   }
 
   Unload() {
@@ -48,6 +64,10 @@ export class Scene {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     gl.useProgram(self.program);
+
+    gl.uniformMatrix4fv(this.program.uniforms.u_World, gl.false, this.worldMatrix);
+    gl.uniformMatrix4fv(this.program.uniforms.u_View, gl.false, this.viewMatrix);
+    gl.uniformMatrix4fv(this.program.uniforms.u_Proj, gl.false, this.projMatrix);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.enableVertexAttribArray(this.program.attribs.a_Position);

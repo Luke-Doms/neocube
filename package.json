@@ -1,0 +1,24 @@
+{
+  "name": "neo_cube-alpha",
+  "version": "1.0.0",
+  "description": "A simulation of three-dimensional rubiks cube style puzzles that allows the user to set custom puzzle dimensions, created with webgl.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luke-Doms/NEO_cube.git"
+  },
+  "author": "Luke Doms",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Luke-Doms/NEO_cube/issues"
+  },
+  "homepage": "https://github.com/Luke-Doms/NEO_cube#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "gl-matrix": "^3.4.3",
+    "nodemon": "^3.1.4"
+  }
+}

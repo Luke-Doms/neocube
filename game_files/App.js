@@ -1,8 +1,8 @@
-import {Scene} from './Scene.js';
+import { Scene } from './Scene.js';
 
 var puzzle;
 
-export var initApp = function (dimensions) {
+export function initApp (dimensions) {
   var canvas = document.getElementById("game-surface");
   
   var gl = canvas.getContext("webgl");

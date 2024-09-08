@@ -1,5 +1,5 @@
 
-aysnc function GetShaderText(shader) {	
+export async function GetShaderText(shader) {	
 	const response = await fetch(shader);
 	const shaderText = await response.text();
 	return shaderText;
@@ -15,7 +15,7 @@ export function CreateShaderProgram(gl, vsText, fsText) {
 	if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
 		throw `failed to compile vertex shader ${gl.getShaderInfoLog(vertexShader)}`;
 	}
-	gl.compileShader(fragmentShader):
+	gl.compileShader(fragmentShader);
 	if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
 		throw `failed to compile fragment shader ${gl.getShaderInfoLog(fragmentShader)}`;
 	}
