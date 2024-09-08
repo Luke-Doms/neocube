@@ -10,7 +10,7 @@ export class Scene {
 
     //writing methods in the constructor like this creates a copy for each instance of the class which is memory intensive, 
     //possible change approach if in final app this becomes too sluggish with multiple puzzles open.
-    this.Load = async function () {
+    this.Load = async () => {
       this.program;
       this.buffer;
       this.viewMatrix;
@@ -41,7 +41,7 @@ export class Scene {
       this.viewMatrix = glMatrix.mat4.create();
       this.projMatrix = glMatrix.mat4.create();
       this.worldMatrix = glMatrix.mat4.create();
-      this.look = glMatrix.vec3.fromValues(5, 5, 5);    //-5, -5, 3
+      this.look = glMatrix.vec3.fromValues(0, 5, 5);    //-5, -5, 3
 
       glMatrix.mat4.lookAt(this.viewMatrix, this.look, [0, 0, 0], [0, 0, 1]);   
       glMatrix.mat4.perspective(
@@ -53,10 +53,33 @@ export class Scene {
       );
     }
 
-    this.Unload = function () {
+    this.Unload = () => {
     }
 
-    this.Begin = function () {
+    this.Begin = () => {
+      this.startTime = 0;
+      var previousFrameTime = performance.now();
+      var dt;
+      const loop = (currentFrameTime) => {
+        dt = currentFrameTime - previousFrameTime;
+        previousFrameTime = currentFrameTime;
+
+        this.Update(dt);
+        this.Render();
+
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    }
+
+    this.Update = (dt) => {
+      var seconds = dt / 1000;
+      this.startTime = this.startTime + seconds;
+      this.look = glMatrix.vec3.fromValues(5*Math.sin(this.startTime), 5*Math.cos(this.startTime), 5);
+      glMatrix.mat4.lookAt(this.viewMatrix, this.look, [0, 0, 0], [0, 0, 1]);   
+    }
+
+    this.Render = () => {
       var gl = this.gl;
       
       gl.enable(gl.DEPTH_TEST);
@@ -75,12 +98,6 @@ export class Scene {
       gl.enableVertexAttribArray(this.program.attribs.a_Color);
       gl.vertexAttribPointer(this.program.attribs.a_Color, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-    }
-
-    this.Update = function () {
-    }
-
-    this.Render = function () {
     }
   }
 }
