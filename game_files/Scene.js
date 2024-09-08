@@ -62,8 +62,12 @@ export class Scene {
     gl.enable(gl.DEPTH_TEST);
     gl.clearColor(0.08, 0.12, 0.18, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    console.log(this.program, this.buffer);
+    console.log('test');
+    console.log(this.program.uniforms);
+    console.log(this.worldMatrix);
 
-    gl.useProgram(self.program);
+    gl.useProgram(this.program);
 
     gl.uniformMatrix4fv(this.program.uniforms.u_World, gl.false, this.worldMatrix);
     gl.uniformMatrix4fv(this.program.uniforms.u_View, gl.false, this.viewMatrix);
@@ -71,9 +75,9 @@ export class Scene {
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.enableVertexAttribArray(this.program.attribs.a_Position);
-    gl.vertexAttribPointer(this.program.attributeLocation, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 0);
+    gl.vertexAttribPointer(this.program.attribs.a_Position, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 0);
     gl.enableVertexAttribArray(this.program.attribs.a_Color);
-    gl.vertexAttribPointer(this.program.attributeLocation, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
+    gl.vertexAttribPointer(this.program.attribs.a_Color, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
 
