@@ -11,7 +11,6 @@ export function ObjParser(objFile) {
 	}
 
 	const lines = objFile.split('\n');
-	console.log(lines);
 	for (var l in lines) {
 		var line = lines[l];
 		line = line.trim();
@@ -30,11 +29,20 @@ export function ObjParser(objFile) {
 				modelVertices.normals.push(newNormal);
 				break;
 			case 'f':
+				for (var t in line) {
+					var tuple = line[t];
+					tuple = tuple.split('/');
+					bufferArray = bufferArray.concat(
+						modelVertices.positionVertices[parseInt(tuple[0]) - 1], 
+						modelVertices.textureCoords[parseInt(tuple[1]) - 1], 
+						modelVertices.normals[parseInt(tuple[2]) - 1]
+					);
+				}
 				break;
 			default:
 				break;
 		}
 	}
-	return modelVertices;
+	return bufferArray;
 }
 

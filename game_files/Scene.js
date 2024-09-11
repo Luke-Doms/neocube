@@ -20,8 +20,8 @@ export class Scene {
 
       const modelText = await GetShaderText('game_files/lib/models/BaseCube.obj');
 
-      const model = ObjParser(modelText);
-      console.log(model);
+      const cubieModel = new Float32Array(ObjParser(modelText));
+      console.log(cubieModel);
 
       const triangle = new Float32Array([1, 0, 0, 1, 0, 0, 
                                          0, 1, 0, 0, 1, 0, 
@@ -32,7 +32,7 @@ export class Scene {
 
       this.program = CreateShaderProgram(this.gl, vertexShaderText, fragmentShaderText);
 
-      this.buffer = CreateModel(this.gl, triangle);
+      this.buffer = CreateModel(this.gl, cubieModel);
       this.program.uniforms = {
         u_Proj: this.gl.getUniformLocation(this.program, 'u_Proj'),
         u_View: this.gl.getUniformLocation(this.program, 'u_View'),
@@ -89,7 +89,7 @@ export class Scene {
       var gl = this.gl;
       
       gl.enable(gl.DEPTH_TEST);
-      gl.clearColor(0.08, 0.12, 0.18, 1);
+      gl.clearColor(1, 1, 1, 1);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       gl.useProgram(this.program);
@@ -100,10 +100,10 @@ export class Scene {
 
       gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
       gl.enableVertexAttribArray(this.program.attribs.a_Position);
-      gl.vertexAttribPointer(this.program.attribs.a_Position, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 0);
-      gl.enableVertexAttribArray(this.program.attribs.a_Color);
-      gl.vertexAttribPointer(this.program.attribs.a_Color, 3, gl.FLOAT, false, 6 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      gl.vertexAttribPointer(this.program.attribs.a_Position, 3, gl.FLOAT, false, 8 * Float32Array.BYTES_PER_ELEMENT, 0);
+      //gl.enableVertexAttribArray(this.program.attribs.a_Color);
+      //gl.vertexAttribPointer(this.program.attribs.a_Color, 3, gl.FLOAT, false, 8 * Float32Array.BYTES_PER_ELEMENT, 5 * Float32Array.BYTES_PER_ELEMENT);
+      gl.drawArrays(gl.TRIANGLES, 0, 36);
     }
   }
 }
