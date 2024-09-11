@@ -2,6 +2,7 @@ import {CreateModel} from './lib/utils/CreateModel.js';
 import { GetShaderText , CreateShaderProgram } from './lib/utils/CreateProgram.js';
 import * as vec3 from '/node_modules/gl-matrix/gl-matrix.js';
 import * as mat4 from '/node_modules/gl-matrix/gl-matrix.js';
+import { ObjParser } from './lib/utils/ObjParser.js';
 
 export class Scene {
   constructor (gl, dimensions) {
@@ -16,6 +17,11 @@ export class Scene {
       this.viewMatrix;
       this.projMatrix;
       this.look;
+
+      const modelText = await GetShaderText('game_files/lib/models/BaseCube.obj');
+
+      const model = ObjParser(modelText);
+      console.log(model);
 
       const triangle = new Float32Array([1, 0, 0, 1, 0, 0, 
                                          0, 1, 0, 0, 1, 0, 
