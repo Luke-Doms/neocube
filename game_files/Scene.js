@@ -24,7 +24,6 @@ export class Scene {
       const cubieModel = new Float32Array(ObjParser(modelText));
 
       this.puzzleModel = CreatePuzzleModel(this.gl, cubieModel, 3, 3, 3);
-      console.log(this.puzzleModel);
 
 
       const vertexShaderText = await GetShaderText('game_files/lib/shaders/VertexShader.glsl');
@@ -49,7 +48,6 @@ export class Scene {
       this.look = glMatrix.vec3.fromValues(0, 5, 5);    //-5, -5, 3
 
       glMatrix.mat4.lookAt(this.viewMatrix, this.look, [0, 0, 0], [0, 0, 1]);   
-      console.log(this.viewMatrix);
       glMatrix.mat4.perspective(
         this.projMatrix,
         glMatrix.glMatrix.toRadian(45),
@@ -89,7 +87,7 @@ export class Scene {
       var gl = this.gl;
       
       gl.enable(gl.DEPTH_TEST);
-      gl.clearColor(1, 1, 1, 1);
+      gl.clearColor(127.5/255, 127.5/255, 127.5/255, 1);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       gl.useProgram(this.program);
@@ -102,9 +100,9 @@ export class Scene {
         const cubieBuffer = this.puzzleModel[i];
         gl.bindBuffer(gl.ARRAY_BUFFER, cubieBuffer);
         gl.enableVertexAttribArray(this.program.attribs.a_Position);
-        gl.vertexAttribPointer(this.program.attribs.a_Position, 3, gl.FLOAT, false, 8 * Float32Array.BYTES_PER_ELEMENT, 0);
-        //gl.enableVertexAttribArray(this.program.attribs.a_Color);
-        //gl.vertexAttribPointer(this.program.attribs.a_Color, 3, gl.FLOAT, false, 8 * Float32Array.BYTES_PER_ELEMENT, 5 * Float32Array.BYTES_PER_ELEMENT);
+        gl.vertexAttribPointer(this.program.attribs.a_Position, 3, gl.FLOAT, false, 11 * Float32Array.BYTES_PER_ELEMENT, 0);
+        gl.enableVertexAttribArray(this.program.attribs.a_Color);
+        gl.vertexAttribPointer(this.program.attribs.a_Color, 3, gl.FLOAT, false, 11 * Float32Array.BYTES_PER_ELEMENT, 3 * Float32Array.BYTES_PER_ELEMENT);
         gl.drawArrays(gl.TRIANGLES, 0, 36);
       }
     }
