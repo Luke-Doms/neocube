@@ -4,11 +4,14 @@ import * as vec3 from '/node_modules/gl-matrix/gl-matrix.js';
 import * as mat4 from '/node_modules/gl-matrix/gl-matrix.js';
 import { ObjParser } from './lib/utils/ObjParser.js';
 import { CreatePuzzleModel } from './lib/utils/CreatePuzzleModel.js';
+import { Camera } from './lib/utils/Camera.js';
 
 export class Scene {
-  constructor (gl, dimensions) {
+  constructor (gl, x, y, z) {
     this.gl = gl;
-    this.dims = dimensions;
+    this.x = x;
+    this.y = y;
+    this.z = z;
 
     //writing methods in the constructor like this creates a copy for each instance of the class which is memory intensive, 
     //possible change approach if in final app this becomes too sluggish with multiple puzzles open.
@@ -18,12 +21,13 @@ export class Scene {
       this.viewMatrix;
       this.projMatrix;
       this.look;
+      this.eye = new Camera([10, 10, 10], [0, 0, 1]);
 
       const modelText = await GetShaderText('game_files/lib/models/BaseCube.obj');
 
       const cubieModel = new Float32Array(ObjParser(modelText));
 
-      this.puzzleModel = CreatePuzzleModel(this.gl, cubieModel, 3, 3, 3);
+      this.puzzleModel = CreatePuzzleModel(this.gl, cubieModel, this.x, this.y, this.z);
 
 
       const vertexShaderText = await GetShaderText('game_files/lib/shaders/VertexShader.glsl');
@@ -45,9 +49,9 @@ export class Scene {
       this.viewMatrix = glMatrix.mat4.create();
       this.projMatrix = glMatrix.mat4.create();
       this.worldMatrix = glMatrix.mat4.create();
-      this.look = glMatrix.vec3.fromValues(0, 5, 5);    //-5, -5, 3
+      this.look = glMatrix.vec3.fromValues(20, 20, 20);    //-5, -5, 3
 
-      glMatrix.mat4.lookAt(this.viewMatrix, this.look, [0, 0, 0], [0, 0, 1]);   
+      glMatrix.mat4.lookAt(this.viewMatrix, this.eye.pos, [0, 0, 0], this.eye.up);   
       glMatrix.mat4.perspective(
         this.projMatrix,
         glMatrix.glMatrix.toRadian(45),
@@ -61,6 +65,26 @@ export class Scene {
     }
 
     this.Begin = () => {
+      this.faceSeleceted = false;
+
+      const OnMouseMove = (event) => {
+        if (!this.faceSelected) {
+          this.eye.Move(this.gl, event, this.viewMatrix, this.projMatrix);
+        }
+      }
+
+      window.addEventListener("mousedown", (event) => {
+        this.faceSelected = false;// CheckIntersection(event); //boolean value
+        this.eye.initialMouseEvent = event;
+        window.addEventListener("mousemove", OnMouseMove);
+      });
+
+      window.addEventListener("mouseup", (event) => {
+        window.removeEventListener("mousemove", OnMouseMove);
+        //DoRotation(this.faceSelected); //pseudo code
+        this.faceSelected = false;
+      });
+
       this.startTime = 0;
       var previousFrameTime = performance.now();
       var dt;
@@ -77,10 +101,9 @@ export class Scene {
     }
 
     this.Update = (dt) => {
-      var seconds = dt / 1000;
-      this.startTime = this.startTime + seconds;
-      this.look = glMatrix.vec3.fromValues(15*Math.sin(this.startTime), 15*Math.cos(this.startTime), 5);
-      glMatrix.mat4.lookAt(this.viewMatrix, this.look, [0, 0, 0], [0, 0, 1]);   
+      if (this.eye.update) {
+        glMatrix.mat4.lookAt(this.viewMatrix, this.eye.pos, [0, 0, 0], this.eye.up);
+      }
     }
 
     this.Render = () => {

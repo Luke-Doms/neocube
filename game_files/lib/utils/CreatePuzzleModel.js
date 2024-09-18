@@ -36,12 +36,10 @@ function Equal(arr1, arr2) {
 	return out;
 }
 function ApplyColors(colors, cubie) {
-	console.log(colors);
 	for (var i = 0; i < 36; i++) {
 		var xNormal = i*11 + 8;
 		for (var color in colors) {
 			if (Equal(colors[color].normal, cubie.slice(xNormal, xNormal + 3))) {
-				console.log('hello');
 				cubie[xNormal - 5] = colors[color].color[0];
 				cubie[xNormal - 4] = colors[color].color[1];
 				cubie[xNormal - 3] = colors[color].color[2];
@@ -88,7 +86,6 @@ export function CreatePuzzleModel(gl, baseCubie, x, y, z) {
 					colors.push(orange);
 				}
 				ApplyColors(colors, newCubie);
-				console.log(newCubie);
 
 				const buffer = CreateModel(gl, newCubie);
 				cubies.push(buffer);
