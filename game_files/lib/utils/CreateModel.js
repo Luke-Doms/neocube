@@ -7,9 +7,15 @@ export function CreateModel(gl, data) {
 		console.log("failed to create buffer.");
 		return null;
 	}
+
+	var model = {
+		vertices: data, 
+		worldMatrix: glMatrix.mat4.create(),
+		buffer_id: gl.createBuffer() 
+	};
 	
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_id);
+	gl.bindBuffer(gl.ARRAY_BUFFER, model.buffer_id);
 	gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
 
-	return buffer_id;
+	return model;
 }

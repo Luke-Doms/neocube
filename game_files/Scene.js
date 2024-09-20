@@ -5,6 +5,7 @@ import * as mat4 from '/node_modules/gl-matrix/gl-matrix.js';
 import { ObjParser } from './lib/utils/ObjParser.js';
 import { CreatePuzzleModel } from './lib/utils/CreatePuzzleModel.js';
 import { Camera } from './lib/utils/Camera.js';
+import { CheckIntersection } from './lib/utils/CheckIntersection.js';
 
 export class Scene {
   constructor (gl, x, y, z) {
@@ -74,7 +75,7 @@ export class Scene {
       }
 
       window.addEventListener("mousedown", (event) => {
-        this.faceSelected = false;// CheckIntersection(event); //boolean value
+        this.faceSelected = CheckIntersection(this.gl, event, this.puzzleModel, this.eye.pos, this.projMatrix, this.viewMatrix); //boolean value
         this.eye.initialMouseEvent = event;
         window.addEventListener("mousemove", OnMouseMove);
       });
@@ -120,7 +121,7 @@ export class Scene {
       gl.uniformMatrix4fv(this.program.uniforms.u_Proj, gl.false, this.projMatrix);
 
       for (var i in this.puzzleModel) {
-        const cubieBuffer = this.puzzleModel[i];
+        const cubieBuffer = this.puzzleModel[i].buffer_id;
         gl.bindBuffer(gl.ARRAY_BUFFER, cubieBuffer);
         gl.enableVertexAttribArray(this.program.attribs.a_Position);
         gl.vertexAttribPointer(this.program.attribs.a_Position, 3, gl.FLOAT, false, 11 * Float32Array.BYTES_PER_ELEMENT, 0);

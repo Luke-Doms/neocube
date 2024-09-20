@@ -87,8 +87,8 @@ export function CreatePuzzleModel(gl, baseCubie, x, y, z) {
 				}
 				ApplyColors(colors, newCubie);
 
-				const buffer = CreateModel(gl, newCubie);
-				cubies.push(buffer);
+				const model = CreateModel(gl, newCubie);
+				cubies.push(model);
 
 			}
 		}
