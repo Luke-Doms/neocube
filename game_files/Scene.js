@@ -23,6 +23,7 @@ export class Scene {
       this.projMatrix;
       this.look;
       this.eye = new Camera([10, 10, 10], [0, 0, 1]);
+      this.faceSelected = false;
 
       const modelText = await GetShaderText('game_files/lib/models/BaseCube.obj');
 
@@ -66,7 +67,6 @@ export class Scene {
     }
 
     this.Begin = () => {
-      this.faceSeleceted = false;
 
       const OnMouseMove = (event) => {
         if (!this.faceSelected) {

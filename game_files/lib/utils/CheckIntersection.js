@@ -31,12 +31,10 @@ function IntersectionRayTriangle(v0World, v1World, v2World, rayDirection, positi
 	}
 
 	const t = glMatrix.vec3.dot(v0v2, qVec) * invDet;
-	//console.log(v0World, v1World, v2World, rayDirection, position);
 	return true;
 }
 
 export function CheckIntersection(gl, event, models, position, projMatrix, viewMatrix) {
-	//console.log(models, projMatrix, viewMatrix);
 	const originNDC = GetClipCoords(gl, event);
 	var viewProjMatrix = glMatrix.mat4.create();
 	glMatrix.mat4.multiply(viewProjMatrix, projMatrix, viewMatrix);
@@ -44,7 +42,6 @@ export function CheckIntersection(gl, event, models, position, projMatrix, viewM
 	glMatrix.mat4.invert(inverseViewProjMatrix, viewProjMatrix);
 	var originWorld = glMatrix.vec4.create();
 	glMatrix.vec4.transformMat4(originWorld, originNDC, inverseViewProjMatrix);
-	console.log(originWorld, originNDC);
 
 	originWorld = Convert(originWorld);
 	var rayDirection = glMatrix.vec3.create();
@@ -67,8 +64,9 @@ export function CheckIntersection(gl, event, models, position, projMatrix, viewM
 			glMatrix.vec3.transformMat4(v2World, v2, model.worldMatrix);
 
 			if (IntersectionRayTriangle(v0World, v1World, v2World, rayDirection, position)) {
-				console.log('intersection');
+				return true;
 			}
 		}
 	}
+	return false;
 }
