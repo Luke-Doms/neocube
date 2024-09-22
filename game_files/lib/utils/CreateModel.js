@@ -1,6 +1,6 @@
 
 
-export function CreateModel(gl, data) {
+export function CreateModel(gl, data, center) {
 	var buffer_id = gl.createBuffer();
 
 	if (!buffer_id) {
@@ -11,7 +11,8 @@ export function CreateModel(gl, data) {
 	var model = {
 		vertices: data, 
 		worldMatrix: glMatrix.mat4.create(),
-		buffer_id: gl.createBuffer() 
+		buffer_id: gl.createBuffer(), 
+		center: center
 	};
 	
 	gl.bindBuffer(gl.ARRAY_BUFFER, model.buffer_id);

@@ -66,6 +66,12 @@ export function CreatePuzzleModel(gl, baseCubie, x, y, z) {
 					newCubie[zIndex] = newCubie[zIndex] + zOffset;
 				}
 
+				const center = {
+					x: (-(2.2*x)/2 + .1) + a*2.2 + 1,
+					y: (-(2.2*y)/2 + .1) + b*2.2 + 1,
+					z: (-(2.2*z)/2 + .1) + c*2.2 + 1
+				}
+
 				var colors = [];
 				if (a == 0) {
 					colors.push(green);
@@ -87,7 +93,7 @@ export function CreatePuzzleModel(gl, baseCubie, x, y, z) {
 				}
 				ApplyColors(colors, newCubie);
 
-				const model = CreateModel(gl, newCubie);
+				const model = CreateModel(gl, newCubie, center);
 				cubies.push(model);
 
 			}
