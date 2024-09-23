@@ -77,24 +77,25 @@ export class Scene {
       const TestRotation = () => {
         for (var i in this.puzzleModel) {
           if (this.puzzleModel[i].center.x > -1 && this.puzzleModel[i].center.x < 1) { //only works for odd number of cubies on x axis
-            console.log(this.puzzleModel[i].worldMatrix);
             const angle = glMatrix.glMatrix.toRadian(90);
             const axis = [1, 0, 0];
             glMatrix.mat4.rotate(this.puzzleModel[i].worldMatrix, this.puzzleModel[i].worldMatrix, angle, axis);
-            console.log(this.puzzleModel[i].worldMatrix);
           }
         }
       }
 
       window.addEventListener("mousedown", (event) => {
         this.faceSelected = CheckIntersection(this.gl, event, this.puzzleModel, this.eye.pos, this.projMatrix, this.viewMatrix); //boolean value
+        console.log(this.faceSelected);
         this.eye.initialMouseEvent = event;
         window.addEventListener("mousemove", OnMouseMove);
       });
 
       window.addEventListener("mouseup", (event) => {
         window.removeEventListener("mousemove", OnMouseMove);
-        //DoRotation(this.faceSelected); //pseudo code
+        if (this.faceSelected) {
+          //ApplyRotation(this.faceSelected, event);
+        }
         this.faceSelected = false;
       });
 
