@@ -6,6 +6,7 @@ import { ObjParser } from './lib/utils/ObjParser.js';
 import { CreatePuzzleModel } from './lib/utils/CreatePuzzleModel.js';
 import { Camera } from './lib/utils/Camera.js';
 import { CheckIntersection } from './lib/utils/CheckIntersection.js';
+import { ApplyRotation } from './lib/utils/ApplyRotation.js';
 
 export class Scene {
   constructor (gl, x, y, z) {
@@ -94,7 +95,7 @@ export class Scene {
       window.addEventListener("mouseup", (event) => {
         window.removeEventListener("mousemove", OnMouseMove);
         if (this.faceSelected) {
-          //ApplyRotation(this.faceSelected, event);
+          ApplyRotation(this.gl, this.faceSelected, event, this.eye.pos, this.projMatrix, this.viewMatrix);
         }
         this.faceSelected = false;
       });
