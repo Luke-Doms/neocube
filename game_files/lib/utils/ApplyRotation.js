@@ -7,8 +7,16 @@ export function ApplyRotation(gl, rotationAxis, selectedFace, puzzleModel, dims)
 	const sliceIndex = glMatrix.vec3.dot(indices, abs);
 	const sliceValue = glMatrix.vec3.dot(selectedFace.point, abs);
 	console.log(sliceIndex, sliceValue);
+	console.log(dims);
 
-	const angle = glMatrix.glMatrix.toRadian(90); //need to generalize this
+	dims.splice(sliceIndex, 1);
+	var angle;
+	if (dims[0] == dims[1]) {
+		angle = glMatrix.glMatrix.toRadian(90); //need to generalize this
+	} else {
+		angle = glMatrix.glMatrix.toRadian(180); //need to generalize this
+	}
+	console.log(dims[0] == dims[1]);
 	var worldCoord = glMatrix.vec3.create();
 	console.log(puzzleModel);
 

@@ -97,7 +97,7 @@ export class Scene {
         window.removeEventListener("mousemove", OnMouseMove);
         if (this.faceSelected) {
           const rotationAxis = GetRotationAxis(this.gl, this.faceSelected, event, this.eye.pos, this.projMatrix, this.viewMatrix);
-          ApplyRotation(this.gl, rotationAxis, this.faceSelected, this.puzzleModel);
+          ApplyRotation(this.gl, rotationAxis, this.faceSelected, this.puzzleModel, [this.x, this.y, this.z]);
         }
         this.faceSelected = false;
       });
