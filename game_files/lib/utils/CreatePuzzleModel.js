@@ -66,11 +66,17 @@ export function CreatePuzzleModel(gl, baseCubie, x, y, z) {
 					newCubie[zIndex] = newCubie[zIndex] + zOffset;
 				}
 
-				const center = {
+				/*const center = {
 					x: (-(2.2*x)/2 + .1) + a*2.2 + 1,
 					y: (-(2.2*y)/2 + .1) + b*2.2 + 1,
 					z: (-(2.2*z)/2 + .1) + c*2.2 + 1
-				}
+				}*/
+
+				const center = glMatrix.vec3.fromValues(
+					(-(2.2*x)/2 + .1) + a*2.2 + 1,
+					(-(2.2*y)/2 + .1) + b*2.2 + 1,
+					(-(2.2*z)/2 + .1) + c*2.2 + 1
+				);
 
 				var colors = [];
 				if (a == 0) {

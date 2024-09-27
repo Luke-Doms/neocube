@@ -1,40 +1,26 @@
-import { GetClipCoords, Convert } from './ConvertCoords.js';
 
-function RayPlaneIntersection(planeNormal, planePoint, ray, rayOrigin) {
-	//assumes vectors are normalized
-	console.log("planeNormal", planeNormal, "planePoint", planePoint, "ray", ray, "rayOrigin", rayOrigin);
-	const denom = glMatrix.vec3.dot(planeNormal, ray);
-	console.log(denom);
-	if (denom != 0) {
-		const diff = glMatrix.vec3.create();
-		glMatrix.vec3.subtract(diff, planePoint, rayOrigin);
-		const t = glMatrix.vec3.dot(diff, planeNormal) / denom;
-		console.log(t);
-		const intersectionPoint = glMatrix.vec3.create();
-		glMatrix.vec3.scale(intersectionPoint, ray, t);
-		glMatrix.vec3.add(intersectionPoint, intersectionPoint, rayOrigin);
-		return intersectionPoint;
+
+export function ApplyRotation(gl, rotationAxis, selectedFace, puzzleModel, dims) {
+	const indices = glMatrix.vec3.fromValues(0, 1, 2);
+	const abs = glMatrix.vec3.fromValues(Math.abs(rotationAxis[0]), Math.abs(rotationAxis[1]), Math.abs(rotationAxis[2]));
+	console.log(indices, abs);
+	const sliceIndex = glMatrix.vec3.dot(indices, abs);
+	const sliceValue = glMatrix.vec3.dot(selectedFace.point, abs);
+	console.log(sliceIndex, sliceValue);
+
+	const angle = glMatrix.glMatrix.toRadian(90); //need to generalize this
+	var worldCoord = glMatrix.vec3.create();
+	console.log(puzzleModel);
+
+	for (var i in puzzleModel) { 
+		glMatrix.vec3.transformMat4(worldCoord, puzzleModel[i].center, puzzleModel[i].worldMatrix);
+		console.log(worldCoord, puzzleModel[i].center);
+		//if (puzzleModel[i].center[sliceIndex] - 1 < sliceValue && sliceValue < puzzleModel[i].center[sliceIndex] + 1) {
+		if (worldCoord[sliceIndex] - 1 < sliceValue && sliceValue < worldCoord[sliceIndex] + 1) {
+			var buffer = glMatrix.mat4.create();
+			glMatrix.mat4.rotate(buffer, buffer, -angle, rotationAxis);
+			glMatrix.mat4.multiply(puzzleModel[i].worldMatrix, buffer, puzzleModel[i].worldMatrix);
+		}
 	}
-	return false;
-}
-
-export function ApplyRotation(gl, selectedFace, mouseEvent, position, projMatrix, viewMatrix) {
-	const mouseUpNDC= GetClipCoords(gl, mouseEvent);
-	var viewProjMatrix = glMatrix.mat4.create();
-	glMatrix.mat4.multiply(viewProjMatrix, projMatrix, viewMatrix);
-	var inverseViewProjMatrix = glMatrix.mat4.create();
-	glMatrix.mat4.invert(inverseViewProjMatrix, viewProjMatrix);
-	var mouseUpWorld = glMatrix.vec4.create();
-	glMatrix.vec4.transformMat4(mouseUpWorld, mouseUpNDC, inverseViewProjMatrix);
-
-	mouseUpWorld = Convert(mouseUpWorld);
-	var rayDirection = glMatrix.vec3.create();
-	glMatrix.vec3.subtract(rayDirection, mouseUpWorld, position);
-	glMatrix.vec3.normalize(rayDirection, rayDirection);
-
-	const mouseUpIntersectionPoint = RayPlaneIntersection(selectedFace.normal, selectedFace.point, rayDirection, position);
-	const swipeVector = glMatrix.vec3.create();
-	console.log(selectedFace, mouseUpIntersectionPoint);
-	glMatrix.vec3.subtract(swipeVector, selectedFace.point, mouseUpIntersectionPoint);
-	console.log(swipeVector);
+	console.log(puzzleModel);
 }
