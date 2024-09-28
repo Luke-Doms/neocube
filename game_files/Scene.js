@@ -88,7 +88,6 @@ export class Scene {
 
       window.addEventListener("mousedown", (event) => {
         this.faceSelected = CheckIntersection(this.gl, event, this.puzzleModel, this.eye.pos, this.projMatrix, this.viewMatrix); //boolean value
-        console.log(this.faceSelected);
         this.eye.initialMouseEvent = event;
         window.addEventListener("mousemove", OnMouseMove);
       });
