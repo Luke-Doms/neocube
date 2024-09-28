@@ -1,7 +1,7 @@
 import {CreateModel} from './lib/utils/CreateModel.js';
 import { GetShaderText , CreateShaderProgram } from './lib/utils/CreateProgram.js';
+import * as glMatrix from 'https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/esm/index.js';
 import { ObjParser } from './lib/utils/ObjParser.js';
-import * as glMatrix from './lib/utils/gl-matrix-min.js';
 import { CreatePuzzleModel } from './lib/utils/CreatePuzzleModel.js';
 import { Camera } from './lib/utils/Camera.js';
 import { CheckIntersection } from './lib/utils/CheckIntersection.js';

@@ -1,3 +1,4 @@
+import * as glMatrix from 'https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/esm/index.js';
 import { GetClipCoords, Convert } from './ConvertCoords.js';
 
 function IntersectionRayTriangle(v0World, v1World, v2World, rayDirection, position) {
@@ -79,7 +80,7 @@ export function CheckIntersection(gl, event, models, position, projMatrix, viewM
 					var normalVectorWorld = glMatrix.vec4.create();
 					glMatrix.vec4.transformMat4(normalVectorWorld, normalVector, model.worldMatrix);
 					normalVectorWorld = Convert(normalVectorWorld);
-					glMatrix.vec3.set(normalVectorWorld, Math.round(normalVectorWorld[0]), Math.round(normalVectorWorld[1]), Math.round(normalVectorWorld[2]));
+					glMatrix.vec3.set(normalVectorWorld, Math.round(normalVectorWorld[0]), Math.round(normalVectorWorld[1]), Math.round(normalVectorWorld[2])); //fix floating point rounding errors here.
 					intersection = { 
 						t:t,
 						point: intersectionPoint,

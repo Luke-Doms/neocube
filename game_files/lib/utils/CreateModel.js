@@ -1,4 +1,4 @@
-
+import * as glMatrix from 'https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/esm/index.js';
 
 export function CreateModel(gl, data, center) {
 	var buffer_id = gl.createBuffer();

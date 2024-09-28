@@ -1,4 +1,4 @@
-
+import * as glMatrix from 'https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/esm/index.js';
 
 export function ApplyRotation(gl, rotationAxis, selectedFace, puzzleModel, dims) {
 	const indices = glMatrix.vec3.fromValues(0, 1, 2);
