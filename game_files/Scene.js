@@ -1,7 +1,7 @@
 import {CreateModel} from './lib/utils/CreateModel.js';
 import { GetShaderText , CreateShaderProgram } from './lib/utils/CreateProgram.js';
-import * as vec3 from '/node_modules/gl-matrix/gl-matrix.js';
-import * as mat4 from '/node_modules/gl-matrix/gl-matrix.js';
+import * as vec3 from '../node_modules/gl-matrix/gl-matrix.js';
+import * as mat4 from '../node_modules/gl-matrix/gl-matrix.js';
 import { ObjParser } from './lib/utils/ObjParser.js';
 import { CreatePuzzleModel } from './lib/utils/CreatePuzzleModel.js';
 import { Camera } from './lib/utils/Camera.js';
