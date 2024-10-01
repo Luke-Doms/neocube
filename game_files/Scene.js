@@ -7,7 +7,7 @@ import { CreatePuzzleModel } from './lib/utils/CreatePuzzleModel.js';
 import { Camera } from './lib/utils/Camera.js';
 import { CheckIntersection } from './lib/utils/CheckIntersection.js';
 import { GetRotationAxis } from './lib/utils/GetRotationAxis.js';
-import { ApplyRotation } from './lib/utils/ApplyRotation.js';
+import { GetCubiesToRotate, ApplyRotation } from './lib/utils/ApplyRotation.js';
 
 export class Scene {
   constructor (gl, x, y, z) {
@@ -26,6 +26,10 @@ export class Scene {
       this.look;
       this.eye = new Camera([10, 10, 10], [0, 0, 1]);
       this.faceSelected = false;
+      this.moveQueue = [];
+      this.ANIMATION_RUNNING = false;
+      this.rotationParams;
+      this.rotationDuration;
 
       const modelText = await GetShaderText('game_files/lib/models/BaseCube.obj');
 
@@ -96,7 +100,7 @@ export class Scene {
         window.removeEventListener("mousemove", OnMouseMove);
         if (this.faceSelected) {
           const rotationAxis = GetRotationAxis(this.gl, this.faceSelected, event, this.eye.pos, this.projMatrix, this.viewMatrix);
-          ApplyRotation(this.gl, rotationAxis, this.faceSelected, this.puzzleModel, [this.x, this.y, this.z]);
+          this.moveQueue.push([rotationAxis, this.faceSelected]);
         }
         this.faceSelected = false;
       });
@@ -126,6 +130,16 @@ export class Scene {
     this.Update = (dt) => {
       if (this.eye.update) {
         glMatrix.mat4.lookAt(this.viewMatrix, this.eye.pos, [0, 0, 0], this.eye.up);
+      }
+      if (!this.ANIMATION_RUNNING && this.moveQueue.length > 0) {
+        this.rotationDuration = 0;
+        const currentMove = this.moveQueue.shift();
+        this.rotationParams = GetCubiesToRotate(this.gl, currentMove[0], currentMove[1], this.puzzleModel, [this.x, this.y, this.z]);
+        this.ANIMATION_RUNNING = true;
+      }
+      if (this.ANIMATION_RUNNING) {
+        this.rotationDuration += dt;
+        this.ANIMATION_RUNNING = ApplyRotation(this.gl, this.rotationParams, this.rotationDuration, this.puzzleModel);
       }
     }
 
