@@ -126,6 +126,16 @@ export class Scene {
       if (this.eye.update) {
         glMatrix.mat4.lookAt(this.viewMatrix, this.eye.pos, [0, 0, 0], this.eye.up);
       }
+      if (!this.ANIMATION_RUNNING && this.moveQueue.length > 0) {
+        this.rotationDuration = 0;
+        const currentMove = this.moveQueue.shift();
+        this.rotationParams = GetCubiesToRotate(this.gl, currentMove[0], currentMove[1], this.puzzleModel, [this.x, this.y, this.z]);
+        this.ANIMATION_RUNNING = true;
+      }
+      if (this.ANIMATION_RUNNING) {
+        this.rotationDuration += dt;
+        this.ANIMATION_RUNNING = ApplyRotation(this.gl, this.rotationParams, this.rotationDuration, this.puzzleModel);
+      }
     }
 
     this.Render = () => {
