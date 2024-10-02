@@ -6,7 +6,7 @@ import { CreatePuzzleModel } from './lib/utils/CreatePuzzleModel.js';
 import { Camera } from './lib/utils/Camera.js';
 import { CheckIntersection } from './lib/utils/CheckIntersection.js';
 import { GetRotationAxis } from './lib/utils/GetRotationAxis.js';
-import { ApplyRotation } from './lib/utils/ApplyRotation.js';
+import { GetCubiesToRotate, ApplyRotation } from './lib/utils/ApplyRotation.js';
 
 export class Scene {
   constructor (gl, x, y, z) {
@@ -25,6 +25,10 @@ export class Scene {
       this.look;
       this.eye = new Camera([10, 10, 10], [0, 0, 1]);
       this.faceSelected = false;
+      this.moveQueue = [];
+      this.ANIMATION_RUNNING = false;
+      this.rotationParams;
+      this.rotationDuration;
 
       const modelText = await GetShaderText('game_files/lib/models/BaseCube.obj');
 
