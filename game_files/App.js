@@ -2,7 +2,7 @@ import { Scene } from './Scene.js';
 
 var puzzle;
 
-export function initApp (x, y, z) {
+export function InitApp (x, y, z) {
   var canvas = document.getElementById("game-surface");
   
   var gl = canvas.getContext("webgl");

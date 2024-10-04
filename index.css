@@ -17,3 +17,18 @@ div {
 	margin-left: auto;
 	margin-right: auto
 }
+
+label {
+	color: rgb(150,0,255);
+}
+
+.selectors {
+	display: flex;
+	flex-direction: row;
+	margin-top: 10px;
+}
+
+.selectors > div { 
+	margin-left: 15px;
+	margin-right: 15px;
+}

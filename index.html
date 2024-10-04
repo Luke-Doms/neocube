@@ -4,9 +4,9 @@
 		<link rel='stylesheet' href='index.css'>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
 		<script type="module">
-		import { initApp } from './game_files/App.js';
+		import { InitApp } from './game_files/App.js';
 		document.addEventListener('DOMContentLoaded', () => {
-		initApp(3, 3, 3);
+		InitApp(3, 3, 3);
 		});
 		</script>
 	</head>
@@ -17,8 +17,23 @@
 		<div>
 			<canvas id='game-surface' width='700' height='450'> Browser does not support html5 </canvas>
 		</div>
-		<div>
-
+		<div class='selectors'>
+			<div>
+				<label for='x'>x:</label>
+				<select name='x' onchange='ChangeSize()'>
+				</select>
+			</div>
+			<div>
+				<label for='y'>y:</label>
+				<select name='y' onchange='ChangeSize()'>
+				</select>
+			</div>
+			<div>
+				<label for='z'>z:</label>
+				<select name='z' onchange='ChangeSize()'>
+				</select>
+			</div>
 		</div>
+		<script type='module' src='selector.js'></script>
 	</body>
 <html>
