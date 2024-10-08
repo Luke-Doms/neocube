@@ -22,9 +22,10 @@ function SetSelectors(selectors, sizes) {
 		});
 }
 
-function ChangeSize() {
+function ChangeSize(app) {
+	app.Unload();
 	const currentValues = Array.from(selectors).map(select => select.value);
-	InitApp(currentValues[0], currentValues[1], currentValues[2]);
+	window.app = InitApp(currentValues[0], currentValues[1], currentValues[2]);
 }
 
 window.ChangeSize = ChangeSize;

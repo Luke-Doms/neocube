@@ -6,7 +6,7 @@
 		<script type="module">
 		import { InitApp } from './game_files/App.js';
 		document.addEventListener('DOMContentLoaded', () => {
-		InitApp(3, 3, 3);
+		window.app = InitApp(3, 3, 3);
 		});
 		</script>
 	</head>
@@ -20,17 +20,17 @@
 		<div class='selectors'>
 			<div>
 				<label for='x'>x:</label>
-				<select name='x' onchange='ChangeSize()'>
+				<select name='x' onchange='ChangeSize(window.app)'>
 				</select>
 			</div>
 			<div>
 				<label for='y'>y:</label>
-				<select name='y' onchange='ChangeSize()'>
+				<select name='y' onchange='ChangeSize(window.app)'>
 				</select>
 			</div>
 			<div>
 				<label for='z'>z:</label>
-				<select name='z' onchange='ChangeSize()'>
+				<select name='z' onchange='ChangeSize(window.app)'>
 				</select>
 			</div>
 		</div>

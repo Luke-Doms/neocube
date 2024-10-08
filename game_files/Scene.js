@@ -68,6 +68,13 @@ export class Scene {
     }
 
     this.Unload = () => {
+      for (var cubie in this.puzzleModel) {
+        const buffer = this.puzzleModel[cubie].buffer_id;
+        gl.deleteBuffer(buffer);
+      }
+
+      gl.deleteProgram(this.program);
+      this.stopRenderLoop = true;
     }
 
     this.Begin = () => {
@@ -110,10 +117,14 @@ export class Scene {
         }
       });
 
+      this.stopRenderLoop = false;
       this.startTime = 0;
       var previousFrameTime = performance.now();
       var dt;
       const loop = (currentFrameTime) => {
+        if (this.stopRenderLoop) {
+          return;
+        }
         dt = currentFrameTime - previousFrameTime;
         previousFrameTime = currentFrameTime;
 

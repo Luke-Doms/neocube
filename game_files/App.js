@@ -1,7 +1,5 @@
 import { Scene } from './Scene.js';
 
-var puzzle;
-
 export function InitApp (x, y, z) {
   var canvas = document.getElementById("game-surface");
   
@@ -11,8 +9,10 @@ export function InitApp (x, y, z) {
     alert("your browser does not support webgl.");
   }
 
-  puzzle = new Scene(gl, x, y, z);
+  var puzzle = new Scene(gl, x, y, z);
   puzzle.Load().then(() => puzzle.Begin());
+
+  return puzzle;
 }
 
 
