@@ -1,1 +1,1 @@
-Adjustable rubiks style puzzle
+Adjustable rubiks style puzzle written with WebGL
