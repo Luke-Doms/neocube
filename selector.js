@@ -23,6 +23,7 @@ function SetSelectors(selectors, sizes) {
 }
 
 function ChangeSize(app) {
+	console.log(app)
 	app.Unload();
 	const currentValues = Array.from(selectors).map(select => select.value);
 	window.app = InitApp(currentValues[0], currentValues[1], currentValues[2]);
