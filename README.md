@@ -1,0 +1,1 @@
+Adjustable rubiks style puzzle
