@@ -70,6 +70,13 @@ export class Scene {
     }
 
     this.Unload = () => {
+      for (var cubie in this.puzzleModel) {
+        const buffer = this.puzzleModel[cubie].buffer_id;
+        gl.deleteBuffer(buffer);
+      }
+
+      gl.deleteProgram(this.program);
+      this.stopRenderLoop = true;
     }
 
     this.Begin = () => {
