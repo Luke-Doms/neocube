@@ -24,7 +24,7 @@ export class Scene {
       this.viewMatrix;
       this.projMatrix;
       this.look;
-      this.eye = new Camera([10, 10, 10], [0, 0, 1]);
+      this.eye = new Camera([3 * this.x, 3 * this.y, 3 * this.z], [0, 0, 1]);
       this.faceSelected = false;
       this.moveQueue = [];
       this.ANIMATION_RUNNING = false;
@@ -57,7 +57,6 @@ export class Scene {
       this.viewMatrix = glMatrix.mat4.create();
       this.projMatrix = glMatrix.mat4.create();
       this.worldMatrix = glMatrix.mat4.create();
-      this.look = glMatrix.vec3.fromValues(20, 20, 20);    //-5, -5, 3
 
       glMatrix.mat4.lookAt(this.viewMatrix, this.eye.pos, [0, 0, 0], this.eye.up);   
       glMatrix.mat4.perspective(
@@ -119,10 +118,14 @@ export class Scene {
         }
       });
 
+      this.stopRenderLoop = false;
       this.startTime = 0;
       var previousFrameTime = performance.now();
       var dt;
       const loop = (currentFrameTime) => {
+        if (this.stopRenderLoop) {
+          return;
+        }
         dt = currentFrameTime - previousFrameTime;
         previousFrameTime = currentFrameTime;
 
